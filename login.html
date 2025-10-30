@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softify - Authentication</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ionicons CDN for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* Apply the Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* gray-900 */
+        }
+        /* Custom gradient text */
+        .gradient-text {
+            background-image: linear-gradient(to right, #8b5cf6, #3b82f6, #14b8a6); /* purple-500, blue-500, teal-500 */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        /* Style for the input fields */
+        .auth-input {
+            position: relative;
+            width: 100%;
+            padding-left: 2.5rem; /* 40px */
+            padding-right: 0.75rem; /* 12px */
+            padding-top: 0.75rem; /* 12px */
+            padding-bottom: 0.75rem; /* 12px */
+            border: 1px solid #374151; /* gray-700 */
+            background-color: #1f2937; /* gray-800 */
+            color: #d1d5db; /* gray-300 */
+            placeholder-color: #6b7280; /* gray-400 */
+            border-radius: 0.5rem; /* 8px */
+            line-height: 1.25;
+            outline: none;
+            transition: all 0.2s ease-in-out;
+        }
+        .auth-input:focus {
+            border-color: #8b5cf6; /* purple-500 */
+            background-color: #374151; /* gray-700 */
+            box-shadow: 0 0 0 1px #8b5cf6;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div class="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div class="w-full max-w-md space-y-8 bg-gray-800 p-8 rounded-2xl shadow-2xl">
+            
+            <!-- Logo and Title -->
+            <div>
+                <!-- This link will also redirect to your main app page -->
+                <a href="#" class="block text-center text-4xl font-bold gradient-text">Softify</a>
+                <h2 id="form-title" class="mt-4 text-center text-2xl font-semibold text-white">
+                    Sign in to your account
+                </h2>
+            </div>
+
+            <!-- Message Box -->
+            <div id="message-box" class="hidden p-4 rounded-lg text-sm font-medium"></div>
+
+            <!-- Tab Buttons -->
+            <div class="flex rounded-lg bg-gray-700 p-1">
+                <button id="tab-signin" class="w-1/2 py-2.5 px-4 rounded-md text-sm font-medium text-white shadow-md bg-purple-600 transition-all">
+                    Sign In
+                </button>
+                <button id="tab-signup" class="w-1/2 py-2.5 px-4 rounded-md text-sm font-medium text-gray-300 hover:text-white hover:bg-gray-600/50 transition-all">
+                    Sign Up
+                </button>
+            </div>
+
+            <!-- Sign In Form (Default) -->
+            <form id="signin-form" class="mt-8 space-y-6" action="#" method="POST">
+                <div class="space-y-4">
+                    <!-- Email -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="mail-outline" class="h-5 w-5 text-gray-400"></ion-icon>
+                        </div>
+                        <input id="signin-email" name="email" type="email" autocomplete="email" required
+                            class="auth-input"
+                            placeholder="Email address">
+                    </div>
+                    <!-- Password -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="lock-closed-outline" class="h-5 w-5 text-gray-400"></ion-icon>
+                        </div>
+                        <input id="signin-password" name="password" type="password" autocomplete="current-password" required
+                            class="auth-input"
+                            placeholder="Password">
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-end">
+                    <div class="text-sm">
+                        <a href="#" id="forgot-password" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                            Forgot your password?
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="btn-signin" type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all">
+                        Sign In
+                    </button>
+                </div>
+
+                <!-- Added navigation link -->
+                <div class="text-sm text-center !mt-4">
+                    <span class="text-gray-400">Don't have an account?</span>
+                    <a href="#" id="link-to-signup" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                        Sign Up
+                    </a>
+                </div>
+            </form>
+
+            <!-- Sign Up Form (Hidden) -->
+            <form id="signup-form" class="hidden mt-8 space-y-6" action="#" method="POST">
+                <div class="space-y-4">
+                    <!-- Email -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="mail-outline" class="h-5 w-5 text-gray-400"></ion-icon>
+                        </div>
+                        <input id="signup-email" name="email" type="email" autocomplete="email" required
+                            class="auth-input"
+                            placeholder="Email address">
+                    </div>
+                    <!-- Password -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="lock-closed-outline" class="h-5 w-5 text-gray-400"></ion-icon>
+                        </div>
+                        <input id="signup-password" name="password" type="password" autocomplete="new-password" required
+                            class="auth-input"
+                            placeholder="Password">
+                    </div>
+                    <!-- Confirm Password -->
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <ion-icon name="checkmark-circle-outline" class="h-5 w-5 text-gray-400"></ion-icon>
+                        </div>
+                        <input id="signup-password-confirm" name="password-confirm" type="password" autocomplete="new-password" required
+                            class="auth-input"
+                            placeholder="Confirm Password">
+                    </div>
+                </div>
+
+                <div>
+                    <button id="btn-signup" type="submit"
+                        class="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-medium rounded-lg text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-purple-500 transition-all">
+                        Create Account
+                    </button>
+                </div>
+
+                <!-- Added navigation link -->
+                <div class="text-sm text-center !mt-4">
+                    <span class="text-gray-400">Already have an account?</span>
+                    <a href="#" id="link-to-signin" class="font-medium text-purple-400 hover:text-purple-300 transition-colors">
+                        Sign In
+                    </a>
+                </div>
+            </form>
+
+            <!-- Social Login Divider -->
+            <!--
+            <div class="relative">
+                <div class="absolute inset-0 flex items-center">
+                    <div class="w-full border-t border-gray-700"></div>
+                </div>
+                <div class="relative flex justify-center text-sm">
+                    <span class="px-2 bg-gray-800 text-gray-400">
+                        Or continue with
+                    </span>
+                </div>
+            </div>
+            -->
+
+            <!-- Social Login Buttons -->
+            <!--
+            <div class="grid grid-cols-2 gap-4">
+                <button id="btn-google"
+                    class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-700 rounded-lg shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-all">
+                    <ion-icon name="logo-google" class="w-5 h-5 mr-2 -ml-1"></ion-icon>
+                    Google
+                </button>
+                <button id="btn-github"
+                    class="w-full inline-flex justify-center items-center py-2.5 px-4 border border-gray-700 rounded-lg shadow-sm bg-gray-700 text-sm font-medium text-gray-300 hover:bg-gray-600 transition-all">
+                    <ion-icon name="logo-github" class="w-5 h-5 mr-2 -ml-1"></ion-icon>
+                    GitHub
+                </button>
+            </div>
+            -->
+        </div>
+    </div>
+
+    <!-- Firebase JS SDK -->
+    <script type="module">
+        // --- Firebase Imports ---
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+        import { 
+            getAuth, 
+            onAuthStateChanged,
+            signInWithEmailAndPassword,
+            createUserWithEmailAndPassword,
+            // signInWithPopup, // Removed social login
+            // GoogleAuthProvider, // Removed social login
+            // GithubAuthProvider, // Removed social login
+            sendPasswordResetEmail,
+            setPersistence,
+            browserLocalPersistence 
+        } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+        // --- IMPORTANT: Added doc and setDoc for Firestore ---
+        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-firestore.js";
+
+        // --- Firebase & App Config (using your provided config) ---
+        // This is your actual Firebase project configuration for "Softify"
+        const firebaseConfig = {
+          apiKey: "AIzaSyD-HevTP-rzbSn0i9uokjmgPjNDrx-y2ng",
+          authDomain: "softify-801ad.firebaseapp.com",
+          projectId: "softify-801ad",
+          storageBucket: "softify-801ad.firebasestorage.app",
+          messagingSenderId: "1082725047041",
+          appId: "1:1082725047041:web:76c8e80e122e3e8f8ad900"
+        };
+        
+        // --- Firebase Initialization ---
+        let app, auth, db;
+        try {
+            app = initializeApp(firebaseConfig);
+            auth = getAuth(app);
+            db = getFirestore(app);
+            // IMPORTANT: Don't forget to configure your Firestore Security Rules!
+            // E.g., allow users to read their own '/users/{userId}' document but not write `isPaid`.
+            setPersistence(auth, browserLocalPersistence);
+            console.log("Firebase initialized successfully.");
+        } catch (e) {
+            console.error("Error initializing Firebase:", e);
+            showMessage("Error initializing application. Please contact support.", "error");
+        }
+
+        // --- Helper: Create/Ensure User Profile in Firestore ---
+        // This function will create a user document on first signup,
+        // or ensure its existence for social logins. It defaults isPaid to false.
+        async function createUserProfileInFirestore(user) {
+            if (user && db) { // Ensure user and db are available
+                const userDocRef = doc(db, 'users', user.uid);
+                try {
+                    // Using { merge: true } ensures existing fields (like isPaid: true) aren't overwritten
+                    // if the profile already exists.
+                    await setDoc(userDocRef, {
+                        email: user.email,
+                        isPaid: false, // Default to false when a new profile is created
+                        createdAt: new Date().toISOString(),
+                    }, { merge: true }); 
+                    console.log(`Firestore profile created/updated for ${user.email} (UID: ${user.uid})`);
+                } catch (error) {
+                    console.error("Error creating/updating user profile in Firestore:", error);
+                    showMessage("Failed to set up user profile. Please try again.", "error");
+                }
+            }
+        }
+
+
+        // --- DOM Elements ---
+        const tabSignin = document.getElementById('tab-signin');
+        const tabSignup = document.getElementById('tab-signup');
+        const signinForm = document.getElementById('signin-form');
+        const signupForm = document.getElementById('signup-form');
+        const formTitle = document.getElementById('form-title');
+        const messageBox = document.getElementById('message-box');
+        
+        const btnSignin = document.getElementById('btn-signin');
+        const btnSignup = document.getElementById('btn-signup');
+        // const btnGoogle = document.getElementById('btn-google'); // Removed
+        // const btnGithub = document.getElementById('btn-github'); // Removed
+        const btnForgot = document.getElementById('forgot-password');
+        
+        // Added links for tab navigation
+        const linkToSignup = document.getElementById('link-to-signup');
+        const linkToSignin = document.getElementById('link-to-signin');
+
+        const signinEmail = document.getElementById('signin-email');
+        const signinPassword = document.getElementById('signin-password');
+        const signupEmail = document.getElementById('signup-email');
+        const signupPassword = document.getElementById('signup-password');
+        const signupPasswordConfirm = document.getElementById('signup-password-confirm');
+
+        // --- Helper: Show Message ---
+        function showMessage(message, type = 'error') {
+            messageBox.classList.remove('hidden');
+            if (type === 'error') {
+                messageBox.className = 'p-4 rounded-lg text-sm font-medium bg-red-800 text-red-100';
+            } else {
+                messageBox.className = 'p-4 rounded-lg text-sm font-medium bg-green-800 text-green-100';
+            }
+            messageBox.textContent = message;
+        }
+        function hideMessage() {
+            messageBox.classList.add('hidden');
+            messageBox.textContent = '';
+        }
+
+        // --- Tab Switching Logic ---
+        function showTab(tabName) {
+            hideMessage();
+            if (tabName === 'signin') {
+                signinForm.classList.remove('hidden');
+                signupForm.classList.add('hidden');
+                formTitle.textContent = 'Sign in to your account';
+                tabSignin.classList.add('text-white', 'bg-purple-600', 'shadow-md');
+                tabSignin.classList.remove('text-gray-300', 'hover:text-white', 'hover:bg-gray-600/50');
+                tabSignup.classList.add('text-gray-300', 'hover:text-white', 'hover:bg-gray-600/50');
+                tabSignup.classList.remove('text-white', 'bg-purple-600', 'shadow-md');
+            } else {
+                signupForm.classList.remove('hidden');
+                signinForm.classList.add('hidden');
+                formTitle.textContent = 'Create a new account';
+                tabSignup.classList.add('text-white', 'bg-purple-600', 'shadow-md');
+                tabSignup.classList.remove('text-gray-300', 'hover:text-white', 'hover:bg-gray-600/50');
+                tabSignin.classList.add('text-gray-300', 'hover:text-white', 'hover:bg-gray-600/50');
+                tabSignin.classList.remove('text-white', 'bg-purple-600', 'shadow-md');
+            }
+        }
+
+        tabSignin.addEventListener('click', () => showTab('signin'));
+        tabSignup.addEventListener('click', () => showTab('signup'));
+
+        // Added event listeners for the new links
+        linkToSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab('signup');
+        });
+
+        linkToSignin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showTab('signin');
+        });
+
+        // --- Firebase Auth Error Handler ---
+        function handleAuthError(error) {
+            console.error("Firebase Auth Error:", error.code, error.message);
+            switch (error.code) {
+                case 'auth/invalid-email':
+                    showMessage('Please enter a valid email address.', 'error');
+                    break;
+                case 'auth/user-not-found':
+                case 'auth/wrong-password':
+                case 'auth/invalid-credential': // More generic for failed login
+                    showMessage('Invalid email or password. Please try again.', 'error');
+                    break;
+                case 'auth/email-already-in-use':
+                    showMessage('An account already exists with this email address.', 'error');
+                    break;
+                case 'auth/weak-password':
+                    showMessage('Password is too weak. Please use at least 6 characters.', 'error');
+                    break;
+                case 'auth/popup-closed-by-user':
+                    showMessage('Sign-in popup was closed. Please try again.', 'error');
+                    break;
+                case 'auth/account-exists-with-different-credential':
+                     showMessage('An account already exists with this email, but with a different sign-in method (e.g., Google). Try that method instead.', 'error');
+                    break;
+                case 'auth/too-many-requests':
+                     showMessage('Too many unsuccessful login attempts. Please try again later.', 'error');
+                    break;
+                default:
+                    showMessage(`An unexpected error occurred: ${error.message}`, 'error');
+            }
+        }
+
+        // --- Auth Event Listeners ---
+
+        // 1. Sign In with Email
+        btnSignin.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            hideMessage();
+            const email = signinEmail.value;
+            const password = signinPassword.value;
+
+            if (!email || !password) {
+                showMessage('Please enter both email and password.', 'error');
+                return;
+            }
+
+            try {
+                btnSignin.disabled = true;
+                btnSignin.textContent = 'Signing In...';
+                await signInWithEmailAndPassword(auth, email, password);
+                // Success will be handled by the onAuthStateChanged listener, which then redirects
+            } catch (error) {
+                handleAuthError(error);
+            } finally {
+                btnSignin.disabled = false;
+                btnSignin.textContent = 'Sign In';
+            }
+        });
+
+        // 2. Sign Up with Email
+        btnSignup.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent default form submission
+            hideMessage();
+            const email = signupEmail.value;
+            const password = signupPassword.value;
+            const confirm = signupPasswordConfirm.value;
+
+            if (password !== confirm) {
+                showMessage('Passwords do not match.', 'error');
+                return;
+            }
+
+            try {
+                btnSignup.disabled = true;
+                btnSignup.textContent = 'Creating Account...';
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                await createUserProfileInFirestore(userCredential.user); // <--- Create Firestore profile for new user
+                // Success will be handled by the onAuthStateChanged listener, which then redirects
+            } catch (error) {
+                handleAuthError(error);
+            } finally {
+                btnSignup.disabled = false;
+                btnSignup.textContent = 'Create Account';
+            }
+        });
+
+        // 3. Forgot Password
+        btnForgot.addEventListener('click', async (e) => {
+            e.preventDefault(); // Prevent default link behavior
+            hideMessage();
+            const email = signinEmail.value; // Use the email from the sign-in form input
+            if (!email) {
+                showMessage('Please enter your email address in the "Sign In" form first.', 'error');
+                return;
+            }
+
+            try {
+                await sendPasswordResetEmail(auth, email);
+                showMessage('Password reset email sent! Check your inbox.', 'success');
+            } catch (error) {
+                handleAuthError(error);
+            }
+        });
+
+        // --- Auth State Change Listener (Main Redirection Logic) ---
+        // This is the single source of truth for auth state changes (login, logout, initial load)
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                // A user is signed in.
+                console.log('User signed in:', user.uid, 'Email:', user.email);
+                
+                // IMPORTANT: Ensure their Firestore profile exists/is updated.
+                // This is safe to call even if the profile already exists and isPaid:true,
+                // thanks to { merge: true } in createUserProfileInFirestore.
+                await createUserProfileInFirestore(user); 
+
+                showMessage('Success! Redirecting to the main app...', 'success');
+                // Redirect to your main app page after a short delay
+                // './index.html' is correct here, as it refers to index.html in the same directory.
+                // For GitHub Pages, if login.html is at softify/login.html, this will go to softify/index.html.
+                setTimeout(() => {
+                    window.location.href = './index.html'; 
+                }, 1500); // 1.5 second delay to let the success message be seen
+            } else {
+                // No user is signed in. Forms should remain visible.
+                console.log('No user signed in.');
+                // Ensure forms are visible if page was loaded by a non-authenticated user
+                // (e.g., after logout from main app)
+                signinForm.classList.remove('hidden'); 
+                tabSignin.click(); // Default to signin tab
+            }
+        });
+
+        // --- Initial Check for Already Logged-in Users ---
+        // This block handles cases where the page is loaded and a user was already
+        // logged in from a previous session (due to Firebase's persistence).
+        // onAuthStateChanged will still fire, but this provides a quicker, instant redirect.
+        // It prevents briefly seeing the login form before onAuthStateChanged triggers.
+        if (auth && auth.currentUser) {
+            console.log("User found in persistent session, redirecting immediately.");
+            // './index.html' is correct here, as it refers to index.html in the same directory.
+            // For GitHub Pages, if login.html is at softify/login.html, this will go to softify/index.html.
+            window.location.href = './index.html'; 
+        } else {
+            // If no user is found immediately, ensure the sign-in form is displayed.
+            showTab('signin'); // This will ensure the default signin tab is active
+        }
+    </script>
+</body>
+</html>
