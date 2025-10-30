@@ -1,0 +1,1181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Softify - Digital Asset Hub</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font: Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Ionicons CDN for icons -->
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <style>
+        /* Apply the Inter font */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* gray-900 */
+        }
+
+        /* Custom scrollbar for dark mode */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #1f2937; /* gray-800 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #374151; /* gray-700 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #4b5563; /* gray-600 */
+        }
+
+        /* Custom gradient text */
+        .gradient-text {
+            background-image: linear-gradient(to right, #8b5cf6, #3b82f6, #14b8a6); /* purple-500, blue-500, teal-500 */
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        /* Sub-nav scrollbar hidden */
+        .sub-nav::-webkit-scrollbar {
+            display: none;
+        }
+        .sub-nav {
+            -ms-overflow-style: none; /* IE and Edge */
+            scrollbar-width: none; /* Firefox */
+        }
+
+        /* Style for disabled pagination links */
+        .pagination-disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        /* View transition styles */
+        .view-transition {
+            transition: opacity 300ms ease-in-out;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-gray-300">
+
+    <div id="app" class="min-h-screen flex flex-col">
+
+        <!-- ===== Header / Top Navigation ===== -->
+        <header class="sticky top-0 z-40 w-full bg-gray-900/90 backdrop-blur-md border-b border-gray-700">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex justify-between items-center h-16">
+                    
+                    <!-- Left: Logo -->
+                    <div class="flex-shrink-0 flex items-center">
+                        <a href="#" class="flex items-center space-x-2" id="logo-link" data-category="dashboard">
+                             <span class="text-2xl font-bold gradient-text">Softify</span>
+                        </a>
+                    </div>
+
+                    <!-- Center: Search Bar -->
+                    <div class="flex-1 px-4 lg:px-12">
+                        <div class="w-full max-w-lg mx-auto">
+                            <label for="search" class="sr-only">Search</label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                    </svg>
+                                </div>
+                                <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-transparent rounded-lg leading-5 bg-gray-800 text-gray-300 placeholder-gray-400 focus:outline-none focus:bg-gray-700 focus:border-gray-700 focus:ring-1 focus:ring-purple-500 sm:text-sm" placeholder="Search 5,000+ Assets..." type="search">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: Icons -->
+                    <div class="flex-shrink-0 flex items-center space-x-4">
+                        <button class="text-gray-400 hover:text-white">
+                            <span class="sr-only">Wishlist</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 016.364 0L12 7.636l1.318-1.318a4.5 4.5 0 116.364 6.364L12 20.364l-7.682-7.682a4.5 4.5 0 010-6.364z" />
+                            </svg>
+                        </button>
+
+                        <button class="text-gray-400 hover:text-white">
+                            <span class="sr-only">Language</span>
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5h12M9 3v2m1.06 7.69l-2.12 2.12M14.24 7.76L11.5 10.5M17.5 14.5l-2.12 2.12M12 21a9 9 0 110-18 9 9 0 010 18z" />
+                            </svg>
+                        </button>
+                        
+                        <button class="flex items-center space-x-2 text-gray-400 hover:text-white">
+                            <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                            <span class="hidden md:block text-sm font-medium">User</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- ===== Sub-Navigation ===== -->
+        <nav id="sub-navigation" class="w-full bg-gray-900 border-b border-gray-700">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-start h-12 space-x-6 overflow-x-auto sub-nav">
+                    <!-- Nav links now have data-category attributes for JS navigation -->
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white px-2 py-1 rounded-md" data-category="dashboard">What's New</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="hdris">HDRIs</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="pbr">Textures (PBR)</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="models">3D Models</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="software">Software</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="courses">Video Courses</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="plugins">Plugins</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="bim">BIM Content</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="cad">CAD Blocks</a>
+                    <a href="#" class="text-sm font-medium text-gray-400 hover:text-white" data-category="ebooks">Ebooks</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- ===== Main Content Area: Dashboard View (Home Page) ===== -->
+        <main id="dashboard-view" class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 view-transition">
+            
+            <!-- Welcome Header -->
+            <div class="flex justify-between items-center mb-6">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Welcome, User</h1>
+                    <p class="text-sm text-gray-400">No Plan</p>
+                </div>
+                <div class="flex space-x-3">
+                    <a href="#" class="px-4 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors">
+                        My Account
+                    </a>
+                    <a href="#" class="px-4 py-2 bg-gray-700 text-white text-sm font-medium rounded-lg hover:bg-gray-600 transition-colors">
+                        My Team
+                    </a>
+                </div>
+            </div>
+
+            <!-- Promo Boxes -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                
+                <!-- SketchUp Box -->
+                <div class="bg-gray-800 rounded-xl p-6 flex items-start space-x-5">
+                     <div class="flex-shrink-0">
+                        <svg class="h-10 w-10 text-orange-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-semibold text-white">Save time with our SketchUp plugins</h2>
+                        <p class="text-sm text-gray-400 mt-1 mb-4">Browse, preview, download and import from inside SketchUp. Your assets set up just in one click.</p>
+                        <!-- Updated to navigate via JS -->
+                        <a href="#" class="text-sm font-medium text-orange-400 hover:text-orange-300" data-category="plugins">Learn More &rarr;</a>
+                    </div>
+                </div>
+                
+                <!-- New 10k+ Assets Box -->
+                <div class="bg-gray-800 rounded-xl p-6 flex items-start space-x-5">
+                     <div class="flex-shrink-0">
+                        <!-- Using a collection/grid icon -->
+                        <svg class="h-10 w-10 text-teal-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="text-base font-semibold text-white">Browse our 10,000+ assets</h2>
+                        <p class="text-sm text-gray-400 mt-1 mb-4">Explore our full library of high-quality textures, models, and HDRIs for your next project.</p>
+                        <!-- Updated to navigate via JS -->
+                        <a href="#" class="text-sm font-medium text-teal-400 hover:text-teal-300" data-category="models">Start Browsing &rarr;</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Sections -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mt-8">
+                
+                <!-- Weekly Drop -->
+                <div class="lg:col-span-2">
+                    <h2 class="text-base font-semibold text-white mb-4">Weekly Drop</h2>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                        <!-- Asset Card 1 -->
+                        <div class="group">
+                            <div class="aspect-square w-full bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="https://placehold.co/400x400/7d7d7d/ffffff?text=Metal+Sheet" alt="Metal Sheet" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/7d7d7d/ffffff?text=Image+Error'">
+                            </div>
+                            <h3 class="text-sm font-medium text-white mt-2">Corrugated Metal Sheet</h3>
+                            <p class="text-xs text-gray-400">5 Days Ago</p>
+                        </div>
+                        <!-- Asset Card 2 -->
+                        <div class="group">
+                            <div class="aspect-square w-full bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="https://placehold.co/400x400/b97a57/ffffff?text=Brick+Wall" alt="Brick Wall" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/b97a57/ffffff?text=Image+Error'">
+                            </div>
+                            <h3 class="text-sm font-medium text-white mt-2">Red Brick Wall</h3>
+                            <p class="text-xs text-gray-400">5 Days Ago</p>
+                        </div>
+                        <!-- Asset Card 3 - Changed to Software Showcase -->
+                        <div class="group">
+                            <div class="aspect-square w-full bg-gray-700 rounded-lg overflow-hidden relative">
+                                <img src="https://placehold.co/400x400/1d4ed8/ffffff?text=New+Plugin" alt="New Software Plugin" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/1d4ed8/ffffff?text=Image+Error'">
+                                <!-- Software Tag -->
+                                <span class="absolute top-2 left-2 bg-blue-600 text-white text-xs font-semibold px-2 py-0.5 rounded-full">SOFTWARE</span>
+                            </div>
+                            <h3 class="text-sm font-medium text-white mt-2">New Blender Addon v2.0</h3>
+                            <p class="text-xs text-gray-400">2 Days Ago</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Favorites -->
+                <div class="lg:col-span-1">
+                     <h2 class="text-base font-semibold text-white mb-4">Favorites</h2>
+                     <div class="bg-gray-800 rounded-xl p-6 h-full flex flex-col justify-center">
+                        <h3 class="text-base font-semibold text-white">Browse our latest asset releases</h3>
+                        <p class="text-sm text-gray-400 mt-1 mb-4">See what's new in the Softify library.</p>
+                        <a href="#" class="text-sm font-medium text-purple-400 hover:text-purple-300" data-category="dashboard">View what's new &rarr;</a>
+                     </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- ===== Main Content Area: Category View (Generic Template) ===== -->
+        <main id="category-view" class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-8 flex-grow view-transition hidden">
+            
+            <!-- Breadcrumbs -->
+            <nav class="text-sm text-gray-400 mb-4" id="breadcrumbs-container">
+                <!-- JS will insert breadcrumbs -->
+            </nav>
+
+            <!-- Category Header -->
+            <h1 id="category-title" class="text-3xl font-bold text-white"></h1>
+            <p id="category-description" class="text-gray-300 mt-2 max-w-3xl"></p>
+
+            <!-- Subcategories -->
+            <div class="mt-8">
+                <h2 id="subcategory-title" class="text-xl font-semibold text-white"></h2>
+                <div id="subcategory-grid" class="grid grid-cols-1 gap-6 mt-4">
+                    <!-- JS will insert subcategory cards or list items here -->
+                </div>
+            </div>
+
+            <!-- Asset Grid / List -->
+            <div class="mt-12">
+                <div id="asset-grid-header" class="flex justify-between items-center mb-4">
+                    <!-- JS will insert asset count -->
+                    <h2 id="asset-count-header" class="text-xl font-semibold text-white"></h2>
+                    <div>
+                        <label for="sort-assets" class="sr-only">Sort by</label>
+                        <select id="sort-assets" name="sort-assets" class="bg-gray-800 border-gray-700 text-white text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500">
+                            <option>Sort by: Featured</option>
+                            <option>Sort by: Popular</option>
+                            <option>Sort by: Newest</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="asset-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5">
+                    <!-- JS will insert asset cards or list items here -->
+                </div>
+
+                <!-- ===== Pagination Section ===== -->
+                <div id="pagination-container" class="flex flex-col items-center justify-center mt-10 space-y-4">
+                    <!-- Pagination Controls -->
+                    <nav id="pagination-nav" class="flex items-center justify-center space-x-1">
+                        <!-- JS will populate this section -->
+                    </nav>
+                    <!-- Pagination Count -->
+                    <p id="pagination-count-text" class="text-sm text-gray-400">
+                        <!-- JS will populate this text -->
+                    </p>
+                </div>
+                <!-- ===== End Pagination Section ===== -->
+
+            </div>
+
+        </main>
+
+
+        <!-- ===== Footer ===== -->
+        <footer class="w-full bg-gray-900 border-t border-gray-700 mt-12 relative">
+            <div class="container mx-auto max-w-screen-xl px-4 sm:px-6 lg:px-8 py-12">
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8">
+                    
+                    <!-- Footer: Logo & Description -->
+                    <div class="md:col-span-3 lg:col-span-2">
+                        <a href="#" class="flex items-center space-x-2" data-category="dashboard">
+                             <span class="text-3xl font-bold gradient-text">Softify</span>
+                        </a>
+                        <p class="text-gray-400 text-sm mt-4 leading-relaxed">
+                            Softify provides high quality 3D assets that support the world's leading 3D artists.
+                        </p>
+                        <p class="text-gray-400 text-sm mt-3 leading-relaxed">
+                            Through cutting-edge 3D creation processes, we deliver photoreal, ultra-high-quality textures, models, and HDRIs for archviz, product rendering, game design, vfx and animation.
+                        </p>
+                        <a href="#" class="inline-block mt-6 px-5 py-2.5 rounded-lg text-sm font-medium text-white bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 transition-all">
+                            Choose a plan
+                        </a>
+                    </div>
+
+                    <!-- Footer: Asset Links -->
+                    <div id="footer-links-assets" class="lg:col-span-1">
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Assets</h3>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="pbr">Textures (PBR)</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="models">3D Models</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="hdris">HDRIs</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="software">Software</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="courses">Video Courses</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="plugins">Plugins</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="bim">BIM Content</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="cad">CAD Blocks</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white" data-category="ebooks">Ebooks</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer: Software Links -->
+                    <div class="lg:col-span-1">
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Software</h3>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Blender Addon</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">SketchUp Extension</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">3ds Max Plugin</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Cinema 4D Plugin</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Maya Converter</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer: Company Links -->
+                    <div class="lg:col-span-1">
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Company</h3>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Blog</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Affiliate Program</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Careers</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Newsletter</a></li>
+                        </ul>
+                    </div>
+
+                    <!-- Footer: Help & Socials -->
+                    <div class="lg:col-span-1">
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase">Help</h3>
+                        <ul class="mt-4 space-y-3">
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Need Help?</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">FAQ</a></li>
+                            <li><a href="#" class="text-sm text-gray-400 hover:text-white">Contact Us</a></li>
+                        </ul>
+                        
+                        <h3 class="text-sm font-semibold text-white tracking-wider uppercase mt-6">Socials</h3>
+                        <div class="flex space-x-4 mt-4">
+                            <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-youtube" class="h-5 w-5"></ion-icon></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-twitter" class="h-5 w-5"></ion-icon></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-instagram" class="h-5 w-5"></ion-icon></a>
+                            <a href="#" class="text-gray-400 hover:text-white"><ion-icon name="logo-facebook" class="h-5 w-5"></ion-icon></a>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Copyright Bar -->
+                <div class="w-full border-t border-gray-700 mt-8 pt-6 flex flex-col sm:flex-row justify-between items-center">
+                    <p class="text-gray-400 text-sm">
+                        &copy; 2025 Softify. All rights reserved.
+                    </p>
+                    <div class="flex space-x-4 mt-4 sm:mt-0">
+                        <a href="#" class="text-sm text-gray-400 hover:text-white">Terms & Conditions</a>
+                        <a href="#" class="text-sm text-gray-400 hover:text-white">Privacy Policy</a>
+                    </div>
+                </div>
+
+            </div>
+            
+            <!-- Back to top button -->
+            <button id="to-top" class="fixed bottom-8 right-8 z-50 bg-gray-600 text-white rounded-full p-2.5 shadow-lg hover:bg-gray-500 transition-all hidden">
+                <span class="sr-only">Back to top</span>
+                <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
+                </svg>
+            </button>
+
+        </footer>
+
+    </div>
+
+    <!-- ===== JavaScript ===== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // --- Page Elements ---
+            const dashboardView = document.getElementById('dashboard-view');
+            const categoryView = document.getElementById('category-view');
+            const toTopButton = document.getElementById('to-top');
+            const subNavigation = document.getElementById('sub-navigation');
+            const appContainer = document.getElementById('app');
+            const logoLink = document.getElementById('logo-link');
+            
+            // --- Category View Content Elements ---
+            const breadcrumbsContainer = document.getElementById('breadcrumbs-container');
+            const categoryTitle = document.getElementById('category-title');
+            const categoryDescription = document.getElementById('category-description');
+            const subcategoryTitle = document.getElementById('subcategory-title');
+            const subcategoryGrid = document.getElementById('subcategory-grid');
+            const assetGridHeader = document.getElementById('asset-grid-header');
+            const assetCountHeader = document.getElementById('asset-count-header');
+            const sortAssetsSelect = document.getElementById('sort-assets');
+            const assetGrid = document.getElementById('asset-grid');
+
+            // --- Pagination Elements ---
+            const paginationContainer = document.getElementById('pagination-container');
+            const paginationNav = document.getElementById('pagination-nav');
+            const paginationCountText = document.getElementById('pagination-count-text');
+
+            // --- Page State ---
+            let currentPage = 1;
+            const assetsPerPage = 20;
+            let currentCategory = 'dashboard'; // Start on dashboard
+            let currentSubCategory = null; 
+
+            // --- ===== MASTER MOCK DATA ===== ---
+            // Merged data from all files
+            const masterCategoryData = {
+                'hdris': {
+                    title: 'HDRIs',
+                    description: 'HDRIs for 3D rendering. Create realistic lighting and 360-degree reflections for archviz, vfx, animation and product rendering. Explore our HDRI library today and say adios to lamps for good.',
+                    subcategories: [
+                        { name: 'Environment HDRIs', img: 'https://placehold.co/600x300/334155/ffffff?text=Environment' },
+                        { name: 'Free HDRIs', img: 'https://placehold.co/600x300/166534/ffffff?text=Free' },
+                        { name: 'Sky HDRIs', img: 'https://placehold.co/600x300/0e7490/ffffff?text=Sky' }
+                    ],
+                    assets: [
+                        { name: 'Sunny Field', category: 'Sky HDRI', img: 'https://placehold.co/400x400/7ecb20/ffffff?text=HDRI+1' },
+                        { name: 'Forest Path', category: 'Nature HDRI', img: 'https://placehold.co/400x400/22c55e/ffffff?text=HDRI+2' },
+                        { name: 'Night Sky', category: 'Sky HDRI', img: 'https://placehold.co/400x400/020617/ffffff?text=HDRI+3' },
+                        { name: 'Urban Rooftop', category: 'Urban HDRI', img: 'https://placehold.co/400x400/64748b/ffffff?text=HDRI+4' },
+                        { name: 'Studio Light', category: 'Studio HDRI', img: 'https://placehold.co/400x400/e2e8f0/333333?text=HDRI+5' },
+                        { name: 'Overcast Day', category: 'Sky HDRI', img: 'https://placehold.co/400x400/94a3b8/ffffff?text=HDRI+6' },
+                        // ... 100 more placeholder HDRIs
+                    ]
+                },
+                'pbr': {
+                    title: 'PBR Materials',
+                    description: 'High-quality, photorealistic PBR materials and textures for your 3D models. Seamless, tilable, and ready for any renderer.',
+                    subcategories: [
+                        { name: 'Asphalt', img: 'https://placehold.co/400x400/404040/ffffff?text=Asphalt' },
+                        { name: 'Bark', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Bark' },
+                        { name: 'Brick', img: 'https://placehold.co/400x400/b91c1c/ffffff?text=Brick' },
+                        { name: 'Concrete', img: 'https://placehold.co/400x400/a8a29e/ffffff?text=Concrete' },
+                        { name: 'Earth', img: 'https://placehold.co/400x400/854d0e/ffffff?text=Earth' },
+                        { name: 'Fabric', img: 'https://placehold.co/400x400/3b82f6/ffffff?text=Fabric' },
+                        { name: 'Flooring', img: 'https://placehold.co/400x400/ca8a04/ffffff?text=Flooring' },
+                        { name: 'Free', img: 'https://placehold.co/400x400/166534/ffffff?text=Free' },
+                        { name: 'Glass', img: 'https://placehold.co/400x400/d4d4d4/333333?text=Glass' },
+                        { name: 'Marble', img: 'https://placehold.co/400x400/e5e5e5/333333?text=Marble' },
+                        { name: 'Metal', img: 'https://placehold.co/400x400/a1a1aa/ffffff?text=Metal' },
+                        { name: 'Paper', img: 'https://placehold.co/400x400/f8fafc/333333?text=Paper' },
+                        { name: 'Plaster', img: 'https://placehold.co/400x400/e2e8f0/333333?text=Plaster' },
+                        { name: 'Plastic', img: 'https://placehold.co/400x400/2563eb/ffffff?text=Plastic' },
+                        { name: 'Rock', img: 'https://placehold.co/400x400/65a30d/ffffff?text=Rock' },
+                        { name: 'Roofing', img: 'https://placehold.co/400x400/c2410c/ffffff?text=Roofing' },
+                        { name: 'Sidewalk', img: 'https://placehold.co/400x400/a3a3a3/ffffff?text=Sidewalk' },
+                        { name: 'Stone', img: 'https://placehold.co/400x400/78716c/ffffff?text=Stone' },
+                        { name: 'Surface Imperfections', img: 'https://placehold.co/400x400/57534e/ffffff?text=Surface' },
+                        { name: 'Terrazzo', img: 'https://placehold.co/400x400/db2777/ffffff?text=Terrazzo' },
+                        { name: 'Tile', img: 'https://placehold.co/400x400/f5f5f5/333333?text=Tile' },
+                        { name: 'Wall Cladding', img: 'https://placehold.co/400x400/06b6d4/ffffff?text=Cladding' },
+                        { name: 'Wood', img: 'https://placehold.co/400x400/a16207/ffffff?text=Wood' }
+                    ],
+                    assets: [
+                        { name: 'Oak Wood Planks', category: 'Wood PBR', img: 'https://placehold.co/400x400/ca8a04/ffffff?text=Wood+1' },
+                        { name: 'Brushed Steel', category: 'Metal PBR', img: 'https://placehold.co/400x400/a1a1aa/ffffff?text=Metal+1' },
+                        { name: 'Denim Fabric', category: 'Fabric PBR', img: 'https://placehold.co/400x400/3b82f6/ffffff?text=Fabric+1' },
+                        { name: 'Rough Concrete', category: 'Concrete PBR', img: 'https://placehold.co/400x400/a8a29e/ffffff?text=Concrete+1' },
+                        { name: 'Red Brick Wall', category: 'Brick PBR', img: 'https://placehold.co/400x400/b91c1c/ffffff?text=Brick+1' },
+                        { name: 'Dry Ground', category: 'Ground PBR', img: 'https://placehold.co/400x400/a16207/ffffff?text=Ground+1' },
+                        { name: 'Mossy Rock', category: 'Rock PBR', img: 'https://placehold.co/400x400/65a30d/ffffff?text=Rock+1' },
+                        { name: 'Pine Bark', category: 'Bark PBR', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Bark+1' },
+                        { name: 'Wet Asphalt', category: 'Asphalt PBR', img: 'https://placehold.co/400x400/404040/ffffff?text=Asphalt+1' },
+                        { name: 'Ceramic Tiles', category: 'Tiles PBR', img: 'https://placehold.co/400x400/f5f5f5/333333?text=Tiles+1' },
+                        { name: 'Blue Plastic', category: 'Plastic PBR', img: 'https://placehold.co/400x400/2563eb/ffffff?text=Plastic+1' },
+                        { name: 'White Marble', category: 'Marble PBR', img: 'https://placehold.co/400x400/e5e5e5/333333?text=Marble+1' },
+                        { name: 'Terracotta Roofing', category: 'Roofing PBR', img: 'https://placehold.co/400x400/c2410c/ffffff?text=Roofing+1' },
+                        { name: 'Pavement Sidewalk', category: 'Sidewalk PBR', img: 'https://placehold.co/400x400/a3a3a3/ffffff?text=Sidewalk+1' },
+                        { name: 'Dirty Glass', category: 'Glass PBR', img: 'https://placehold.co/400x400/d4d4d4/333333?text=Glass+1' },
+                        { name: 'Forest Earth', category: 'Earth PBR', img: 'https://placehold.co/400x400/854d0e/ffffff?text=Earth+1' },
+                        // ... 90 more placeholder PBR assets
+                    ]
+                },
+                'models': {
+                    title: '3D Models',
+                    description: 'Models for 3D rendering. Perfect for games, archviz, vfx, animation and product rendering. Compatible with 15 major software and renderers including Blender, Cinema 4D, Maya, 3ds Max and more.',
+                    subcategories: [
+                        { name: 'Bathroom Models', img: 'https://placehold.co/400x400/f5f5f5/333333?text=Bathroom' },
+                        { name: 'Brick Models', img: 'https://placehold.co/400x400/b91c1c/ffffff?text=Brick' },
+                        { name: 'Curtain Models', img: 'https://placehold.co/400x400/a3a3a3/ffffff?text=Curtain' },
+                        { name: 'Decoration Models', img: 'https://placehold.co/400x400/fbbf24/ffffff?text=Decor' },
+                        { name: 'Dining Models', img: 'https://placehold.co/400x400/e5e5e5/333333?text=Dining' },
+                        { name: 'Drink Models', img: 'https://placehold.co/400x400/c2410c/ffffff?text=Drink' },
+                        { name: 'Electronic Models', img: 'https://placehold.co/400x400/404040/ffffff?text=Electronic' },
+                        { name: 'Fixtures Models', img: 'https://placehold.co/400x400/a1a1aa/ffffff?text=Fixtures' },
+                        { name: 'Food Models', img: 'https://placehold.co/400x400/dc2626/ffffff?text=Food' },
+                        { name: 'Free Models', img: 'https://placehold.co/400x400/166534/ffffff?text=Free' },
+                        { name: 'Furniture Models', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Furniture' },
+                        { name: 'Kitchen Models', img: 'https://placehold.co/400x400/64748b/ffffff?text=Kitchen' },
+                        { name: 'Lighting Models', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Lighting' },
+                        { name: 'Nature Models', img: 'https://placehold.co/400x400/22c55e/ffffff?text=Nature' },
+                        { name: 'Rock Models', img: 'https://placehold.co/400x400/78716c/ffffff?text=Rock' },
+                        { name: 'Rug Models', img: 'https://placehold.co/400x400/854d0e/ffffff?text=Rug' },
+                        { name: 'Seating Models', img: 'https://placehold.co/400x400/0d9488/ffffff?text=Seating' },
+                        { name: 'Vegetation Models', img: 'https://placehold.co/400x400/65a30d/ffffff?text=Vegetation' }
+                    ],
+                    assets: [
+                        // Adding a few placeholder assets for demonstration
+                        { name: 'Modern Sofa', category: 'Furniture Models', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Sofa' },
+                        { name: 'Kitchen Set', category: 'Kitchen Models', img: 'https://placehold.co/400x400/64748b/ffffff?text=Kitchen' },
+                        { name: 'Potted Plant', category: 'Vegetation Models', img: 'https://placehold.co/400x400/65a30d/ffffff?text=Plant' },
+                        { name: 'Free Chair', category: 'Free Models', img: 'https://placehold.co/400x400/166534/ffffff?text=Chair' },
+                        { name: 'Dining Table', category: 'Dining Models', img: 'https://placehold.co/400x400/e5e5e5/333333?text=Table' },
+                    ]
+                },
+                'software': { 
+                    title: 'Architectural & Rendering Software', 
+                    description: 'Industry-standard software and plugins for architecture, design, and visualization.', 
+                    subcategories: [], // No subcategories for software list view
+                    assets: [
+                        { name: 'AutoCAD 2025', description: 'Professional 2D/3D CAD software for design and drafting.', category: 'CAD & Drafting', iconImg: 'https://placehold.co/64x64/dc2626/ffffff?text=AC', platform: 'Windows', downloads: 185200, rating: 4.5, size: '2.1GB' },
+                        { name: 'SketchUp Pro 2025', description: 'Easy-to-use 3D modeling software for architecture and design.', category: '3D Modeling', iconImg: 'https://placehold.co/64x64/005f9e/ffffff?text=SKP', platform: 'Windows', downloads: 210430, rating: 4.5, size: '980MB' },
+                        { name: 'V-Ray 6 for SketchUp', description: 'Photorealistic rendering plugin for SketchUp.', category: 'Rendering', iconImg: 'https://placehold.co/64x64/1e40af/ffffff?text=VR', platform: 'Windows', downloads: 95300, rating: 5.0, size: '720MB', featured: true },
+                        { name: 'Revit 2025', description: 'BIM software for architects, engineers, and construction.', category: 'BIM & Architecture', iconImg: 'https://placehold.co/64x64/004b83/ffffff?text=RVT', platform: 'Windows', downloads: 115600, rating: 4.5, size: '3.5GB' },
+                        { name: '3ds Max 2025', description: '3D modeling, animation, and rendering software.', category: '3D Modeling & VFX', iconImg: 'https://placehold.co/64x64/0696d7/ffffff?text=3DS', platform: 'Windows', downloads: 130100, rating: 4.0, size: '2.8GB' },
+                        { name: 'Corona Renderer 11', description: 'High-performance photorealistic rendering for 3ds Max & C4D.', category: 'Rendering', iconImg: 'https://placehold.co/64x64/f97316/ffffff?text=CR', platform: 'Windows', downloads: 72800, rating: 4.5, size: '450MB' },
+                        { name: 'Enscape 4.0', description: 'Real-time rendering and virtual reality plugin.', category: 'Real-time Rendering', iconImg: 'https://placehold.co/64x64/e11d48/ffffff?text=ENSC', platform: 'Windows', downloads: 88900, rating: 4.5, size: '310MB' }
+                    ] 
+                },
+                'courses': { 
+                    title: 'Video Courses', 
+                    description: 'Learn from industry experts with in-depth video courses on 3D modeling, rendering, and post-production.', 
+                    subcategories: [
+                        { name: 'Blender Courses', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Blender' },
+                        { name: 'V-Ray Courses', img: 'https://placehold.co/400x400/1e40af/ffffff?text=V-Ray' },
+                        { name: 'SketchUp Courses', img: 'https://placehold.co/400x400/005f9e/ffffff?text=SketchUp' },
+                        { name: '3ds Max Courses', img: 'https://placehold.co/400x400/0696d7/ffffff?text=3ds+Max' },
+                        { name: 'Post-Production', img: 'https://placehold.co/400x400/a855f7/ffffff?text=Photoshop' },
+                        { name: 'Free Courses', img: 'https://placehold.co/400x400/166534/ffffff?text=Free' },
+                    ], 
+                    assets: [
+                        { name: 'Intro to Blender 4.0', category: 'Blender Courses', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Course+1', instructor: 'John Doe', duration: '8h 30m', level: 'Beginner', rating: 4.5 },
+                        { name: 'V-Ray 6 Masterclass', category: 'V-Ray Courses', img: 'https://placehold.co/400x400/1e40af/ffffff?text=Course+2', instructor: 'Jane Smith', duration: '12h 15m', level: 'Advanced', rating: 5.0, featured: true },
+                        { name: 'SketchUp for Architects', category: 'SketchUp Courses', img: 'https://placehold.co/400x400/005f9e/ffffff?text=Course+3', instructor: 'Alex Johnson', duration: '6h 0m', level: 'Intermediate', rating: 4.0 },
+                        { name: '3ds Max Modeling', category: '3ds Max Courses', img: 'https://placehold.co/400x400/0696d7/ffffff?text=Course+4', instructor: 'Maria Garcia', duration: '10h 45m', level: 'Intermediate', rating: 4.5 },
+                        { name: 'Photoshop Post-Production', category: 'Post-Production', img: 'https://placehold.co/400x400/a855f7/ffffff?text=Course+5', instructor: 'Chris Lee', duration: '5h 20m', level: 'All Levels', rating: 4.0 },
+                        { name: 'Free: Lighting Fundamentals', category: 'Free Courses', img: 'https://placehold.co/400x400/166534/ffffff?text=Course+6', instructor: 'Jane Smith', duration: '1h 30m', level: 'Beginner', rating: 4.0 },
+                        { name: 'Advanced Blender Geometry', category: 'Blender Courses', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Course+7', instructor: 'John Doe', duration: '15h 0m', level: 'Advanced', rating: 4.5 },
+                        { name: 'V-Ray for Materials', category: 'V-Ray Courses', img: 'https://placehold.co/400x400/1e40af/ffffff?text=Course+8', instructor: 'Emily White', duration: '7h 5m', level: 'Intermediate', rating: 4.5 },
+                    ] 
+                },
+                'plugins': { 
+                    title: 'Plugins', 
+                    description: 'Enhance your favorite 3D software with powerful plugins and add-ons. Streamline your workflow and unlock new creative possibilities.', 
+                    subcategories: [
+                        { name: 'Blender Add-ons', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Blender' },
+                        { name: 'SketchUp Extensions', img: 'https://placehold.co/400x400/005f9e/ffffff?text=SketchUp' },
+                        { name: '3ds Max Plugins', img: 'https://placehold.co/400x400/0696d7/ffffff?text=3ds+Max' },
+                        { name: 'V-Ray Plugins', img: 'https://placehold.co/400x400/1e40af/ffffff?text=V-Ray' },
+                        { name: 'Free Plugins', img: 'https://placehold.co/400x400/166534/ffffff?text=Free' },
+                    ], 
+                    assets: [
+                        { name: 'ProScatter', category: 'Blender Add-ons', img: 'https://placehold.co/64x64/f59e0b/ffffff?text=PS', author: 'Asset Co', software: 'Blender', downloads: 15200, rating: 5.0, featured: true },
+                        { name: 'EasyArch', category: 'SketchUp Extensions', img: 'https://placehold.co/64x64/005f9e/ffffff?text=EA', author: 'Design Tools', software: 'SketchUp', downloads: 8500, rating: 4.5 },
+                        { name: 'Forest Pack Lite', category: '3ds Max Plugins', img: 'https://placehold.co/64x64/0696d7/ffffff?text=FP', author: 'iToo Software', software: '3ds Max', downloads: 120500, rating: 4.5 },
+                        { name: 'V-Ray Scatter', category: 'V-Ray Plugins', img: 'https://placehold.co/64x64/1e40af/ffffff?text=VS', author: 'Chaos', software: 'V-Ray', downloads: 7600, rating: 4.0 },
+                        { name: 'Node Wrangler', category: 'Blender Add-ons', img: 'https://placehold.co/64x64/f59e0b/ffffff?text=NW', author: 'Blender Foundation', software: 'Blender', downloads: 500000, rating: 5.0 },
+                        { name: 'SimpleTools', category: 'Free Plugins', img: 'https://placehold.co/64x64/166534/ffffff?text=ST', author: 'CreatorXYZ', software: 'Blender', downloads: 1800, rating: 4.0 },
+                    ] 
+                },
+                'bim': { 
+                    title: 'BIM Content', 
+                    description: 'High-quality, data-rich Revit families and BIM models for architecture, engineering, and construction projects.', 
+                    subcategories: [
+                        { name: 'Revit Furniture', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Furniture', downloadUrl: '#', software: 'Revit', downloads: 12500 },
+                        { name: 'Revit Doors', img: 'https://placehold.co/400x400/a16207/ffffff?text=Doors', downloadUrl: '#', software: 'Revit', downloads: 8800 },
+                        { name: 'Revit Windows', img: 'https://placehold.co/400x400/0e7490/ffffff?text=Windows', downloadUrl: '#', software: 'Revit', downloads: 9200 },
+                        { name: 'MEP Components', img: 'https://placehold.co/400x400/404040/ffffff?text=MEP', downloadUrl: '#', software: 'Revit', downloads: 4100 },
+                        { name: 'Casework', img: 'https://placehold.co/400x400/64748b/ffffff?text=Casework', downloadUrl: '#', software: 'Revit', downloads: 6300 },
+                        { name: 'Lighting Fixtures', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Lighting', downloadUrl: '#', software: 'Revit', downloads: 7100 },
+                    ],
+                    assets: [] // BIM uses subcategories as the main content
+                },
+                'cad': { 
+                    title: 'CAD Blocks', 
+                    description: 'A comprehensive library of 2D and 3D CAD blocks for AutoCAD, SketchUp, and other CAD software.', 
+                    subcategories: [
+                        { name: 'CAD Vehicles', img: 'https://placehold.co/400x400/dc2626/ffffff?text=Cars', downloadUrl: '#', software: 'AutoCAD', downloads: 22000 },
+                        { name: 'CAD Trees & Plants', img: 'https://placehold.co/400x400/22c55e/ffffff?text=Trees', downloadUrl: '#', software: 'AutoCAD', downloads: 18500 },
+                        { name: 'CAD Furniture', img: 'https://placehold.co/400x400/7c2d12/ffffff?text=Furniture', downloadUrl: '#', software: 'AutoCAD', downloads: 15300 },
+                        { name: 'CAD People', img: 'https://placehold.co/400x400/64748b/ffffff?text=People', downloadUrl: '#', software: 'AutoCAD', downloads: 9000 },
+                        { name: 'CAD Doors & Windows', img: 'https://placehold.co/400x400/a16207/ffffff?text=Doors', downloadUrl: '#', software: 'AutoCAD', downloads: 11200 },
+                        { name: 'CAD Kitchen Appliances', img: 'https://placehold.co/400x400/f5f5f5/333333?text=Kitchen', downloadUrl: '#', software: 'AutoCAD', downloads: 7600 },
+                    ],
+                    assets: [] // CAD uses subcategories as the main content
+                },
+                'ebooks': { 
+                    title: 'Ebooks', 
+                    description: 'Learn new skills from our collection of digital books, guides, and tutorials written by industry experts.', 
+                    subcategories: [
+                        { name: 'The Art of Architectural Visualization', img: 'https://placehold.co/400x400/8b5cf6/ffffff?text=Archviz', downloadUrl: '#', format: 'PDF', downloads: 18200 },
+                        { name: 'Blender 4.0 Character Creation', img: 'https://placehold.co/400x400/f59e0b/ffffff?text=Blender', downloadUrl: '#', format: 'PDF / EPUB', downloads: 11500 },
+                        { name: 'V-Ray 6: The Definitive Guide', img: 'https://placehold.co/400x400/14b8a6/ffffff?text=V-Ray', downloadUrl: '#', format: 'PDF', downloads: 9300 },
+                        { name: 'Game Design Principles', img: 'https://placehold.co/400x400/ec4899/ffffff?text=GameDev', downloadUrl: '#', format: 'PDF / EPUB', downloads: 7600 },
+                        { name: 'Introduction to Substance 3D Painter', img: 'https://placehold.co/400x400/6b7280/ffffff?text=Substance', downloadUrl: '#', format: 'PDF', downloads: 5100 },
+                    ],
+                    assets: [] // Ebooks uses subcategories as the main content
+                },
+            };
+            
+            // --- Add placeholder assets for pagination ---
+            for (let i = 1; i <= 100; i++) {
+                masterCategoryData.hdris.assets.push({
+                    name: `Extra HDRI ${i}`,
+                    category: 'Generated HDRI',
+                    img: `https://placehold.co/400x400/3b82f6/ffffff?text=HDRI+${i + 6}`
+                });
+            }
+            for (let i = 1; i <= 90; i++) {
+                masterCategoryData.pbr.assets.push({
+                    name: `Extra PBR ${i}`,
+                    category: 'Generated PBR',
+                    img: `https://placehold.co/400x400/8b5cf6/ffffff?text=PBR+${i}`
+                });
+            }
+            for (let i = 1; i <= 80; i++) {
+                masterCategoryData.models.assets.push({
+                    name: `Extra Model ${i}`,
+                    category: 'Generated Model',
+                    img: `https://placehold.co/400x400/db2777/ffffff?text=Model+${i}`
+                });
+            }
+            // --- END MASTER MOCK DATA ---
+
+
+            // --- ===== HELPER FUNCTIONS ===== ---
+
+            // --- Star Rating Generator ---
+            const getStarRatingHTML = (rating) => {
+                let html = '<div class="flex items-center">';
+                const fullStars = Math.floor(rating);
+                const halfStar = rating % 1 !== 0;
+                const emptyStars = 5 - fullStars - (halfStar ? 1 : 0);
+                for (let i = 0; i < fullStars; i++) {
+                    html += '<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>';
+                }
+                if (halfStar) {
+                    html += '<svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0v15z"/></svg>';
+                }
+                for (let i = 0; i < emptyStars; i++) {
+                    html += '<svg class="w-4 h-4 text-gray-600" fill="currentColor" viewBox="0 0 20 20"><path d="M10 15l-5.878 3.09 1.123-6.545L.489 7.09l6.572-.955L10 0l2.939 6.135 6.572.955-4.756 4.455 1.123 6.545z"/></svg>';
+                }
+                html += '</div>';
+                return html;
+            };
+
+            // --- Pagination Button Generator ---
+            const createPaginationButton = (text, page, isDisabled, isCurrent = false, isIcon = false) => {
+                const baseClasses = `px-3 py-2 rounded-md`;
+                const textClasses = `text-sm font-medium`;
+                const iconClasses = `h-5 w-5`;
+
+                if (isCurrent) {
+                    return `<a href="#" class="${baseClasses} ${textClasses} bg-gray-700 text-white" aria-current="page" data-page="${page}">${text}</a>`;
+                }
+                if (isDisabled) {
+                    const disabledClasses = isIcon ? 'text-gray-600' : 'text-gray-500';
+                    return `<span class="${baseClasses} ${disabledClasses} cursor-not-allowed ${isIcon ? '' : textClasses}">${text}</span>`;
+                }
+                const hoverClasses = `hover:text-white hover:bg-gray-700`;
+                const activeClasses = isIcon ? 'text-gray-500' : 'text-gray-400';
+                return `<a href="#" class="${baseClasses} ${activeClasses} ${hoverClasses} ${isIcon ? '' : textClasses}" data-page="${page}" ${isIcon ? `aria-label="${page} page"` : ''}>${text}</a>`;
+            };
+
+            // --- ===== CORE RENDERING FUNCTIONS ===== ---
+
+            // --- Update Breadcrumbs ---
+            const updateBreadcrumbs = (categoryKey, subCategoryName = null) => {
+                const data = masterCategoryData[categoryKey];
+                if (!data) return;
+
+                let html = `<a href="#" class="hover:text-white" id="breadcrumb-home" data-category="dashboard">Home</a>
+                            <span class="mx-2">/</span>`;
+                
+                if (subCategoryName) {
+                    html += `<a href="#" class="hover:text-white" id="breadcrumb-category" data-category="${categoryKey}">${data.title}</a>
+                             <span class="mx-2">/</span>
+                             <span class="text-white capitalize">${subCategoryName.replace('-', ' ')}</span>`;
+                } else {
+                    html += `<span class="text-white">${data.title}</span>`;
+                }
+                
+                breadcrumbsContainer.innerHTML = html;
+            };
+
+            // --- Render Pagination Buttons ---
+            const renderPaginationButtons = (totalPages) => {
+                paginationNav.innerHTML = ''; // Clear old buttons
+                const prevIcon = `<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" /></svg>`;
+                const nextIcon = `<svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" /></svg>`;
+
+                paginationNav.innerHTML += createPaginationButton(prevIcon, 'prev', currentPage === 1, false, true);
+
+                let startPage = Math.max(1, currentPage - 2);
+                let endPage = Math.min(totalPages, currentPage + 2);
+
+                if (totalPages > 5) {
+                    if (currentPage <= 3) {
+                        endPage = 5;
+                    } else if (currentPage > totalPages - 3) {
+                        startPage = totalPages - 4;
+                    }
+                } else {
+                    endPage = totalPages;
+                }
+
+                if (startPage > 1) {
+                    paginationNav.innerHTML += createPaginationButton('1', 1, false, false, false);
+                    if (startPage > 2) {
+                        paginationNav.innerHTML += createPaginationButton('...', 'disabled', true, false, false);
+                    }
+                }
+                for (let i = startPage; i <= endPage; i++) {
+                    paginationNav.innerHTML += createPaginationButton(i, i, false, i === currentPage, false);
+                }
+                if (endPage < totalPages) {
+                    if (endPage < totalPages - 1) {
+                        paginationNav.innerHTML += createPaginationButton('...', 'disabled', true, false, false);
+                    }
+                    paginationNav.innerHTML += createPaginationButton(totalPages, totalPages, false, false, false);
+                }
+                
+                paginationNav.innerHTML += createPaginationButton(nextIcon, 'next', currentPage === totalPages, false, true);
+            };
+
+            // --- Render Current Asset Page (for grid/paginated views) ---
+            const renderCurrentPage = () => {
+                if (!currentCategory || currentCategory === 'dashboard') return;
+
+                const data = masterCategoryData[currentCategory];
+                if (!data) return;
+
+                let allAssets = data.assets;
+                if (currentSubCategory) {
+                    const filterTerm = currentSubCategory.replace('-', ' ');
+                    allAssets = allAssets.filter(asset => 
+                        (asset.category && asset.category.toLowerCase().includes(filterTerm)) ||
+                        (asset.name && asset.name.toLowerCase().includes(filterTerm))
+                    );
+                }
+
+                const totalAssets = allAssets.length;
+                const totalPages = Math.ceil(totalAssets / assetsPerPage);
+
+                // Handle no assets
+                if (totalAssets === 0) {
+                    assetGrid.innerHTML = '';
+                    let headerText = `No assets found in this category.`;
+                    if(currentSubCategory) {
+                         const capSubCategory = currentSubCategory.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                        headerText = `No ${capSubCategory} ${data.title.replace(' (PBR)', '')} found.`;
+                    }
+                    assetCountHeader.innerText = headerText;
+                    paginationContainer.classList.add('hidden');
+                    return;
+                }
+                
+                paginationContainer.classList.remove('hidden');
+
+                const startIndex = (currentPage - 1) * assetsPerPage;
+                const endIndex = Math.min(currentPage * assetsPerPage, totalAssets);
+                const assetsToShow = allAssets.slice(startIndex, endIndex);
+
+                // 1. Populate Asset Grid Header
+                let headerText = `${totalAssets} ${data.title}`;
+                if (currentSubCategory) {
+                    const capSubCategory = currentSubCategory.replace('-', ' ').replace(/\b\w/g, l => l.toUpperCase());
+                    headerText = `${totalAssets} ${capSubCategory} ${data.title}`;
+                }
+                assetCountHeader.innerText = headerText;
+
+                // 2. Populate Asset Grid
+                assetGrid.innerHTML = '';
+                assetsToShow.forEach(asset => {
+                    assetGrid.innerHTML += `
+                        <div class="group relative">
+                            <div class="aspect-square w-full bg-gray-700 rounded-lg overflow-hidden">
+                                <img src="${asset.img}" alt="${asset.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/4B5563/ffffff?text=Image+Error'">
+                            </div>
+                            <button class="absolute top-2 right-2 p-1.5 bg-gray-900/50 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                                <span class="sr-only">Add to wishlist</span>
+                                <svg class="w-4 h-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+                                </svg>
+                            </button>
+                            <h3 class="text-sm font-medium text-white mt-2">${asset.name}</h3>
+                            <p class="text-xs text-gray-400">${asset.category}</p>
+                        </div>
+                    `;
+                });
+
+                // 3. Populate Pagination Count
+                const showingStart = startIndex + 1;
+                paginationCountText.innerHTML = `
+                    Showing <span class="font-medium text-white">${showingStart}</span> to <span class="font-medium text-white">${endIndex}</span> of <span class="font-medium text-white">${totalAssets}</span> assets
+                `;
+
+                // 4. Populate Pagination Nav
+                renderPaginationButtons(totalPages);
+            };
+
+            // --- Render Category Page (The main router) ---
+            const renderCategoryPage = (categoryKey) => {
+                const data = masterCategoryData[categoryKey];
+                if (!data) {
+                    console.error('No data for category:', categoryKey);
+                    return;
+                }
+
+                // Reset state for new category
+                currentPage = 1;
+                currentSubCategory = null;
+
+                // 1. Populate Breadcrumbs
+                updateBreadcrumbs(categoryKey);
+
+                // 2. Populate Header
+                categoryTitle.innerText = data.title;
+                categoryDescription.innerText = data.description;
+                
+                // 3. Reset Grids
+                subcategoryGrid.innerHTML = '';
+                assetGrid.innerHTML = '';
+                assetCountHeader.innerText = '';
+
+                // --- 4. Handle Different Layouts ---
+                const gridCategories = ['hdris', 'pbr', 'models'];
+                const subcatListCategories = ['bim', 'cad', 'ebooks'];
+                const assetListCategories = ['software', 'plugins', 'courses'];
+
+                if (gridCategories.includes(categoryKey)) {
+                    // --- GRID LAYOUT (HDRIs, PBR, Models) ---
+                    sortAssetsSelect.classList.remove('hidden');
+                    paginationContainer.classList.remove('hidden');
+                    assetGrid.className = 'grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-5';
+                    
+                    // Subcategory Grid
+                    let subcatGridClasses = 'grid grid-cols-1 gap-6 mt-4';
+                    let subcatAspectClass = 'aspect-[2/1]'; // Default wide
+                    if (categoryKey === 'pbr') {
+                        subcatGridClasses += ' sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6';
+                        subcatAspectClass = 'aspect-square';
+                    } else if (categoryKey === 'models') {
+                        subcatGridClasses += ' sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6';
+                        subcatAspectClass = 'aspect-square';
+                    } else if (categoryKey === 'hdris') {
+                        subcatGridClasses += ' sm:grid-cols-3';
+                    }
+                    subcategoryGrid.className = subcatGridClasses;
+
+                    if (data.subcategories.length > 0) {
+                        subcategoryTitle.innerHTML = `${data.subcategories.length} ${data.title} Categories`;
+                        subcategoryTitle.classList.remove('hidden');
+                        subcategoryGrid.classList.remove('hidden');
+                        data.subcategories.forEach(subcat => {
+                            const subCatSlug = subcat.name.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '');
+                            subcategoryGrid.innerHTML += `
+                                <a href="#" class="group block sub-category-card" data-sub-category="${subCatSlug}">
+                                    <div class="${subcatAspectClass} w-full bg-gray-700 rounded-lg overflow-hidden relative">
+                                        <img src="${subcat.img}" alt="${subcat.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/4B5563/ffffff?text=Image+Error'">
+                                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                                    </div>
+                                    <h3 class="text-base font-medium text-white mt-3">${subcat.name}</h3>
+                                </a>
+                            `;
+                        });
+                    } else {
+                        subcategoryTitle.classList.add('hidden');
+                        subcategoryGrid.classList.add('hidden');
+                    }
+                    
+                    // Asset Grid (Initial render)
+                    renderCurrentPage();
+
+                } else if (subcatListCategories.includes(categoryKey)) {
+                    // --- SUBCATEGORY LIST LAYOUT (BIM, CAD, Ebooks) ---
+                    sortAssetsSelect.classList.add('hidden');
+                    paginationContainer.classList.add('hidden');
+                    assetGridHeader.classList.add('hidden');
+                    assetGrid.className = ''; // Remove grid styles
+                    subcategoryGrid.className = 'flex flex-col border-t border-gray-700 mt-4';
+
+                    subcategoryTitle.innerHTML = 'Categories';
+                    subcategoryTitle.classList.remove('hidden');
+                    subcategoryGrid.classList.remove('hidden');
+
+                    if (categoryKey === 'bim') {
+                        data.subcategories.forEach(subcat => {
+                            subcategoryGrid.innerHTML += `
+                                <div class="flex items-center justify-between p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                    <div class="flex items-center min-w-0"><div class="flex-shrink-0 w-12 h-12 mr-4"><img src="${subcat.img}" alt="${subcat.name} icon" class="w-12 h-12 rounded-lg object-cover"></div><div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${subcat.name}</h3><div class="flex items-center space-x-3 text-xs text-gray-400 mt-1"><span class="flex items-center"><svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zM11 17h-2v-6h2v6zm4 0h-2v-6h2v6z"></path></svg>${subcat.software}</span><span>&bull;</span><span>${subcat.downloads.toLocaleString()} Downloads</span></div></div></div>
+                                    <div class="flex-shrink-0 ml-4"><a href="${subcat.downloadUrl}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all download-button" data-category-name="${subcat.name}"><svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>Download</a></div>
+                                </div>`;
+                        });
+                    } else if (categoryKey === 'cad') {
+                         data.subcategories.forEach(subcat => {
+                            subcategoryGrid.innerHTML += `
+                                <div class="flex items-center justify-between p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                    <div class="flex items-center min-w-0"><div class="flex-shrink-0 w-12 h-12 mr-4"><img src="${subcat.img}" alt="${subcat.name} icon" class="w-12 h-12 rounded-lg object-cover"></div><div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${subcat.name}</h3><div class="flex items-center space-x-3 text-xs text-gray-400 mt-1"><span class="flex items-center"><svg class="w-3.5 h-3.5 mr-1" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"></path></svg>${subcat.software}</span><span>&bull;</span><span>${subcat.downloads.toLocaleString()} Downloads</span></div></div></div>
+                                    <div class="flex-shrink-0 ml-4"><a href="${subcat.downloadUrl}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all download-button" data-category-name="${subcat.name}"><svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>Download</a></div>
+                                </div>`;
+                        });
+                    } else if (categoryKey === 'ebooks') {
+                        data.subcategories.forEach(subcat => {
+                            subcategoryGrid.innerHTML += `
+                                <div class="flex items-center justify-between p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                    <div class="flex items-center min-w-0"><div class="flex-shrink-0 w-12 h-12 mr-4"><img src="${subcat.img}" alt="${subcat.name} icon" class="w-12 h-12 rounded-lg object-cover"></div><div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${subcat.name}</h3><div class="flex items-center space-x-3 text-xs text-gray-400 mt-1"><span class="flex items-center"><svg class="w-3.5 h-3.5 mr-1.5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18c-2.305 0-4.408.867-6 2.292m0-14.25v14.25" /></svg>${subcat.format}</span><span>&bull;</span><span>${subcat.downloads.toLocaleString()} Downloads</span></div></div></div>
+                                    <div class="flex-shrink-0 ml-4"><a href="${subcat.downloadUrl}" class="inline-flex items-center px-4 py-2 bg-gradient-to-r from-purple-500 to-blue-500 text-white text-sm font-medium rounded-lg hover:from-purple-600 hover:to-blue-600 transition-all download-button" data-category-name="${subcat.name}"><svg class="w-5 h-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>Download</a></div>
+                                </div>`;
+                        });
+                    }
+                } else if (assetListCategories.includes(categoryKey)) {
+                    // --- ASSET LIST LAYOUT (Software, Plugins, Courses) ---
+                    sortAssetsSelect.classList.remove('hidden');
+                    paginationContainer.classList.add('hidden'); // No pagination for these lists
+                    assetGridHeader.classList.remove('hidden');
+                    assetGrid.className = 'flex flex-col border-t border-gray-700';
+                    assetCountHeader.innerText = ''; // Hide asset count header
+
+                    // Subcategory Grid (as cards)
+                    let subcatGridClasses = 'grid grid-cols-1 gap-6 mt-4 sm:grid-cols-3';
+                    let subcatAspectClass = 'aspect-[2/1]'; // Wide
+                    subcategoryGrid.className = subcatGridClasses;
+
+                    if (data.subcategories.length > 0) {
+                        subcategoryTitle.innerHTML = `${data.subcategories.length} ${data.title} Categories`;
+                        subcategoryTitle.classList.remove('hidden');
+                        subcategoryGrid.classList.remove('hidden');
+                        data.subcategories.forEach(subcat => {
+                            const subCatSlug = subcat.name.toLowerCase().replace(/ /g, '-').replace(/[()]/g, '');
+                            subcategoryGrid.innerHTML += `
+                                <a href="#" class="group block sub-category-card" data-sub-category="${subCatSlug}">
+                                    <div class="${subcatAspectClass} w-full bg-gray-700 rounded-lg overflow-hidden relative">
+                                        <img src="${subcat.img}" alt="${subcat.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" onerror="this.src='https://placehold.co/400x400/4B5563/ffffff?text=Image+Error'">
+                                        <div class="absolute inset-0 bg-black bg-opacity-20"></div>
+                                    </div>
+                                    <h3 class="text-base font-medium text-white mt-3">${subcat.name}</h3>
+                                </a>
+                            `;
+                        });
+                    } else {
+                        subcategoryTitle.classList.add('hidden');
+                        subcategoryGrid.classList.add('hidden');
+                    }
+
+                    // Asset List
+                    let allAssets = data.assets;
+                    if (currentSubCategory) {
+                         const filterTerm = currentSubCategory.replace('-', ' ');
+                         allAssets = allAssets.filter(asset => 
+                            (asset.category && asset.category.toLowerCase().includes(filterTerm))
+                         );
+                    }
+
+                    if (allAssets.length > 0) {
+                        if (categoryKey === 'software') {
+                            allAssets.forEach(asset => {
+                                const featuredBadge = asset.featured ? '<span class="absolute -top-3 left-4 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full uppercase">Featured</span>' : '';
+                                assetGrid.innerHTML += `
+                                    <div class="relative flex items-center p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                        ${featuredBadge}
+                                        <div class="flex-shrink-0 w-16 h-16 mr-5"><img src="${asset.iconImg}" alt="${asset.name} icon" class="w-16 h-16 rounded-lg object-cover"></div>
+                                        <div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${asset.name}</h3><p class="text-sm text-gray-400 truncate">${asset.description}</p><p class="text-xs text-blue-400 mt-1">${asset.category}</p></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden md:block"><div class="flex items-center"><svg class="w-4 h-4 mr-2" fill="#00A4EF" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M0 0h11v11h-11v-11zm13 0h11v11h-11v-11zm-13 13h11v11h-11v-11zm13 0h11v11h-11v-11z"/></svg><span class="text-sm text-gray-300">${asset.platform}</span></div><span class="text-xs text-gray-500">${asset.downloads.toLocaleString()}</span></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden lg:block"><span class="text-xs text-gray-500 uppercase">Reputation</span>${getStarRatingHTML(asset.rating)}</div>
+                                        <div class="flex-shrink-0 w-24 px-4 text-right"><span class="text-sm font-medium text-white">${asset.size}</span></div>
+                                    </div>`;
+                            });
+                        } else if (categoryKey === 'plugins') {
+                             allAssets.forEach(asset => {
+                                const featuredBadge = asset.featured ? '<span class="absolute -top-3 left-4 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full uppercase">Featured</span>' : '';
+                                assetGrid.innerHTML += `
+                                    <div class="relative flex items-center p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                        ${featuredBadge}
+                                        <div class="flex-shrink-0 w-16 h-16 mr-5"><img src="${asset.img}" alt="${asset.name} icon" class="w-16 h-16 rounded-lg object-cover"></div>
+                                        <div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${asset.name}</h3><p class="text-sm text-gray-400 truncate">By ${asset.author}</p><p class="text-xs text-blue-400 mt-1">${asset.category}</p></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden md:block"><div class="flex items-center"><svg class="w-4 h-4 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" /></svg><span class="text-sm text-gray-300">${asset.software}</span></div></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden lg:block">${getStarRatingHTML(asset.rating)}</div>
+                                        <div class="flex-shrink-0 w-24 px-4 text-right"><span class="text-sm font-medium text-white">${asset.downloads.toLocaleString()}</span><span class="text-xs text-gray-400 block">downloads</span></div>
+                                    </div>`;
+                            });
+                        } else if (categoryKey === 'courses') {
+                            allAssets.forEach(asset => {
+                                const featuredBadge = asset.featured ? '<span class="absolute -top-3 left-4 bg-yellow-400 text-gray-900 text-xs font-bold px-2 py-0.5 rounded-full uppercase">Featured</span>' : '';
+                                assetGrid.innerHTML += `
+                                    <div class="relative flex items-center p-4 border-b border-gray-700 hover:bg-gray-800 transition-colors">
+                                        ${featuredBadge}
+                                        <div class="flex-shrink-0 w-32 h-20 mr-5"><img src="${asset.img}" alt="${asset.name} icon" class="w-32 h-20 rounded-lg object-cover"></div>
+                                        <div class="flex-1 min-w-0"><h3 class="text-base font-semibold text-white truncate">${asset.name}</h3><p class="text-sm text-gray-400 truncate">By ${asset.instructor}</p><p class="text-xs text-blue-400 mt-1">${asset.category}</p></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden md:block"><div class="flex items-center"><svg class="w-4 h-4 text-gray-400 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m0 0V9a2 2 0 00-2-2h-2a2 2 0 00-2 2v10z" /></svg><span class="text-sm text-gray-300">${asset.level}</span></div></div>
+                                        <div class="flex-shrink-0 w-32 px-4 text-left hidden lg:block">${getStarRatingHTML(asset.rating)}</div>
+                                        <div class="flex-shrink-0 w-24 px-4 text-right"><span class="text-sm font-medium text-white">${asset.duration}</span></div>
+                                    </div>`;
+                            });
+                        }
+                    } else {
+                        assetGrid.innerHTML = `<p class="text-gray-400 p-4">No assets found in this sub-category.</p>`;
+                    }
+                }
+            };
+
+            // --- ===== VIEW NAVIGATION ===== ---
+            const showView = (viewName) => {
+                // 1. Hide all views
+                dashboardView.classList.add('hidden');
+                categoryView.classList.add('hidden');
+                
+                // 2. Update active link in nav
+                currentCategory = viewName;
+                document.querySelectorAll('#sub-navigation a, #footer-links-assets a').forEach(link => {
+                    link.classList.remove('text-white', 'bg-gray-700');
+                    link.classList.add('text-gray-400', 'hover:text-white');
+                    if (link.dataset.category === viewName) {
+                        link.classList.add('text-white', 'bg-gray-700');
+                        link.classList.remove('text-gray-400');
+                    }
+                });
+
+                // 3. Show the correct view
+                if (viewName === 'dashboard') {
+                    dashboardView.classList.remove('hidden');
+                } else {
+                    categoryView.classList.remove('hidden');
+                    // Render the category page
+                    renderCategoryPage(viewName);
+                }
+                
+                // 4. Scroll to top
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+
+            // --- ===== EVENT LISTENERS ===== ---
+
+            // --- Navigation Listeners ---
+            appContainer.addEventListener('click', (e) => {
+                // Find the closest link with a data-category attribute
+                const targetLink = e.target.closest('a[data-category]');
+                if (!targetLink) return;
+
+                e.preventDefault();
+                const category = targetLink.dataset.category;
+                
+                if (category) {
+                    showView(category);
+                }
+            });
+
+            // --- Sub-category grid click listener (for grid views) ---
+            subcategoryGrid.addEventListener('click', (e) => {
+                e.preventDefault();
+                
+                // Handle grid card clicks
+                const targetLink = e.target.closest('.sub-category-card');
+                if (targetLink) {
+                    const subCategory = targetLink.dataset.subCategory;
+                    if (!subCategory) return;
+
+                    currentPage = 1;
+                    currentSubCategory = subCategory;
+                    
+                    // Re-render based on view type
+                    const assetListCategories = ['software', 'plugins', 'courses'];
+                    if (assetListCategories.includes(currentCategory)) {
+                        // For list views, we just re-render the asset list part
+                        renderCategoryPage(currentCategory); // This will now filter assets
+                    } else {
+                        // For grid views, we re-render the paginated asset grid
+                        renderCurrentPage();
+                    }
+                    
+                    updateBreadcrumbs(currentCategory, subCategory); // Update breadcrumbs
+                    assetGridHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+
+                // Handle download button clicks
+                const downloadBtn = e.target.closest('.download-button');
+                if (downloadBtn) {
+                    const categoryName = downloadBtn.dataset.categoryName;
+                    console.log(`User clicked download for: ${categoryName}`);
+                    // In a real app, this would trigger a download.
+                }
+            });
+
+
+            // --- Pagination Click Listener ---
+            paginationNav.addEventListener('click', (e) => {
+                e.preventDefault();
+                const target = e.target.closest('a');
+                if (!target) return; 
+
+                const page = target.dataset.page;
+                if (!page || page === 'disabled') return;
+
+                // Determine total pages based on current filter
+                let allAssets = masterCategoryData[currentCategory].assets;
+                if (currentSubCategory) {
+                    const filterTerm = currentSubCategory.replace('-', ' ');
+                    allAssets = allAssets.filter(asset => 
+                        (asset.category && asset.category.toLowerCase().includes(filterTerm)) ||
+                        (asset.name && asset.name.toLowerCase().includes(filterTerm))
+                    );
+                }
+                const totalPages = Math.ceil(allAssets.length / assetsPerPage);
+
+
+                switch (page) {
+                    case 'prev':
+                        if (currentPage > 1) currentPage--;
+                        break;
+                    case 'next':
+                        if (currentPage < totalPages) currentPage++;
+                        break;
+                    default:
+                        currentPage = parseInt(page);
+                }
+
+                renderCurrentPage();
+                assetGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+
+
+            // --- Back to top button ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) {
+                    toTopButton.classList.remove('hidden');
+                } else {
+                    toTopButton.classList.add('hidden');
+                }
+            });
+
+            toTopButton.addEventListener('click', () => {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+
+            // --- Initial Page Load ---
+            showView('dashboard');
+
+        });
+    </script>
+</body>
+</html>
